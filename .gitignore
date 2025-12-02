@@ -1,0 +1,15 @@
+# Build artifacts
+/target/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+
+# AoC session token (if you store it locally)
+.env
+session.txt
