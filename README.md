@@ -14,6 +14,7 @@ Learning Rust through Advent of Code 2025.
 | 6   | ✅     | ✅     |
 | 7   | ✅     | ✅     |
 | 8   | ✅     | ✅     |
+| 9   | ✅     | ✅     |
 
 ## Structure
 
