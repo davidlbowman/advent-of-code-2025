@@ -1,6 +1,6 @@
 # Advent of Code 2025
 
-Learning Rust through Advent of Code 2025.
+Learning Rust through Advent of Code 2025. Starting from Day 9, solutions were developed with significant assistance from [Claude Code](https://github.com/anthropics/claude-code).
 
 ## Progress
 
@@ -15,6 +15,7 @@ Learning Rust through Advent of Code 2025.
 | 7   | ✅     | ✅     |
 | 8   | ✅     | ✅     |
 | 9   | ✅     | ✅     |
+| 10  | ✅     | ✅     |
 
 ## Structure
 
