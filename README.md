@@ -16,6 +16,7 @@ Learning Rust through Advent of Code 2025. Starting from Day 9, solutions were d
 | 8   | ✅     | ✅     |
 | 9   | ✅     | ✅     |
 | 10  | ✅     | ✅     |
+| 11  | ✅     | ✅     |
 
 ## Structure
 
