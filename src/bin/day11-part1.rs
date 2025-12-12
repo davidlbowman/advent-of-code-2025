@@ -19,11 +19,7 @@ fn parse_input(input: &str) -> HashMap<&str, Vec<&str>> {
     graph
 }
 
-fn count_paths<'a>(
-    graph: &HashMap<&'a str, Vec<&'a str>>,
-    current: &'a str,
-    target: &str,
-) -> u64 {
+fn count_paths<'a>(graph: &HashMap<&'a str, Vec<&'a str>>, current: &'a str, target: &str) -> u64 {
     if current == target {
         return 1;
     }
