@@ -40,7 +40,11 @@ fn gcd(a: i64, b: i64) -> i64 {
 }
 
 fn lcm(a: i64, b: i64) -> i64 {
-    if a == 0 || b == 0 { 0 } else { (a / gcd(a, b)) * b }
+    if a == 0 || b == 0 {
+        0
+    } else {
+        (a / gcd(a, b)) * b
+    }
 }
 
 fn solve_gauss(targets: &[i64], buttons: &[Vec<usize>]) -> u64 {
@@ -68,13 +72,12 @@ fn solve_gauss(targets: &[i64], buttons: &[Vec<usize>]) -> u64 {
     let mut pivot_cols: Vec<usize> = Vec::new();
 
     for col in 0..n_buttons {
-        let mut found_pivot = None;
-        for row in pivot_row..n_counters {
-            if aug[row][col] != 0 {
-                found_pivot = Some(row);
-                break;
-            }
-        }
+        let found_pivot = aug
+            .iter()
+            .enumerate()
+            .skip(pivot_row)
+            .find(|(_, r)| r[col] != 0)
+            .map(|(i, _)| i);
 
         let Some(pivot_r) = found_pivot else {
             continue;
@@ -89,16 +92,21 @@ fn solve_gauss(targets: &[i64], buttons: &[Vec<usize>]) -> u64 {
                 let l = lcm(pivot_val.abs(), row_val.abs());
                 let mult_pivot = l / pivot_val.abs();
                 let mult_row = l / row_val.abs();
-                let sign = if (pivot_val > 0) == (row_val > 0) { -1 } else { 1 };
+                let sign = if (pivot_val > 0) == (row_val > 0) {
+                    -1
+                } else {
+                    1
+                };
 
-                for c in 0..=n_buttons {
-                    aug[row][c] = aug[row][c] * mult_row + sign * aug[pivot_row][c] * mult_pivot;
+                let pivot_row_copy: Vec<i64> = aug[pivot_row].clone();
+                for (c, val) in aug[row].iter_mut().enumerate() {
+                    *val = *val * mult_row + sign * pivot_row_copy[c] * mult_pivot;
                 }
 
                 let g = aug[row].iter().fold(0i64, |acc, &x| gcd(acc, x));
                 if g > 1 {
-                    for c in 0..=n_buttons {
-                        aug[row][c] /= g;
+                    for val in &mut aug[row] {
+                        *val /= g;
                     }
                 }
             }
@@ -112,29 +120,22 @@ fn solve_gauss(targets: &[i64], buttons: &[Vec<usize>]) -> u64 {
         }
     }
 
-    for row in pivot_row..n_counters {
-        if aug[row][n_buttons] != 0 {
+    for row in aug.iter().skip(pivot_row) {
+        if row[n_buttons] != 0 {
             return u64::MAX;
         }
     }
 
-    let free_cols: Vec<usize> = (0..n_buttons)
-        .filter(|c| !pivot_cols.contains(c))
-        .collect();
+    let free_cols: Vec<usize> = (0..n_buttons).filter(|c| !pivot_cols.contains(c)).collect();
 
     let max_free: Vec<i64> = free_cols
         .iter()
-        .map(|&c| {
-            buttons[c]
-                .iter()
-                .map(|&i| targets[i])
-                .min()
-                .unwrap_or(0)
-        })
+        .map(|&c| buttons[c].iter().map(|&i| targets[i]).min().unwrap_or(0))
         .collect();
 
     let mut best = u64::MAX;
 
+    #[allow(clippy::too_many_arguments)]
     fn search(
         aug: &[Vec<i64>],
         pivot_cols: &[usize],
